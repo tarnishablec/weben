@@ -1,11 +1,11 @@
-# `share`
+# `@weben/sandbox`
 
 > TODO: description
 
 ## Usage
 
 ```
-const share = require('share');
+const sandbox = require('@weben/sandbox');
 
 // TODO: DEMONSTRATE API
 ```

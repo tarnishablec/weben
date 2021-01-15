@@ -1,17 +1,18 @@
 {
-  "name": "@weben/editor",
-  "version": "0.0.1",
-  "description": "weben editor",
+  "name": "@weben/sandbox",
+  "version": "0.0.0",
+  "description": "weben sandbox",
   "main": "src/index.ts",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "sideEffect": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/tarnishablec/weben"
   },
   "keywords": [
     "weben",
-    "editor"
+    "sandbox"
   ],
   "author": "tarnishablec <tarnishablec@outlook.com>",
   "homepage": "",
@@ -26,8 +27,5 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   }
 }
