@@ -20,7 +20,7 @@ export const runCommand = async (cmd) => {
    * ) => void} fn
    */
   const batchRun = (fn) =>
-    args.emptyIsRoot
+    !targets.length && args.emptyIsRoot
       ? fn()
       : targets.forEach((target) => fn(target, args))
 
