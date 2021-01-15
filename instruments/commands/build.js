@@ -8,11 +8,7 @@ import { clean } from "./clean.js"
 
 /**
  * @param {string} packageDir
- * @param {{
- *   entryPoints: BuildOptions["entryPoints"]
- *   platform?: BuildOptions["platform"]
- *   format?: BuildOptions["format"]
- * }} buildOptions
+ * @param {BuildOptions} buildOptions
  */
 export const buildPackage = (
   packageDir,
