@@ -70,6 +70,7 @@ export const initIndexTs = (packageDir, packageName) => {
       indexPath,
       `export const hello = '${packageName}'`
     )
+    fs.removeSync(path.resolve(packageDir, "lib"))
   }
 }
 

@@ -9,8 +9,9 @@
     "build": "node ./instruments/cli.js --command build",
     "create": "node ./instruments/cli.js --command create",
     "init": "node ./instruments/cli.js --command init",
-    "clean": "node ./instruments/cli.js --command clean",
-    "upgrade": "node ./instruments/cli.js --command upgrade",
+    "clean": "node ./instruments/cli.js --command clean --ignoreBlackList",
+    "upgrade": "node ./instruments/cli.js --command upgrade --emptyIsRoot",
+    "release": "node ./instruments/cli.js --command release --emptyIsRoot",
     "test": "jest"
   },
   "type": "module",

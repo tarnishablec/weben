@@ -1,16 +1,13 @@
 import { init } from "./init.js"
-import { resolvePackageDir, run } from "../utils.js"
-import minimist from "minimist"
+import { run } from "../utils.js"
 import { SCOPE } from "../const.js"
-import fs from "fs-extra"
-import path from "path"
 
-export const create = () => {
-  const { name: packageName } = minimist(process.argv.slice(2))
+/** @param {string} packageName */
+export const create = (packageName) => {
+  if (!packageName)
+    throw new Error(`must provide a name before create package.`)
   run(`npx lerna create @${SCOPE}/${packageName} --yes`, {})
   init(packageName, true)
-  const packageDir = resolvePackageDir(packageName)
-  fs.removeSync(path.resolve(packageDir, "lib"))
 }
 
 export default create
