@@ -33,13 +33,16 @@ export const resolveArgTargets = ({
   emptyIsRoot,
   ignoreBlackList
 } = {}) => {
-  const { _ } = minimist(process.argv.slice(2))
+  let { _, blacklist } = minimist(process.argv.slice(2))
+  blacklist = String(blacklist).split(",")
   const targets =
     _.length === 0 && !emptyIsRoot
       ? fs
           .readdirSync(path.resolve(resolveRepoRootDir(), "packages"))
           .filter((name) =>
-            ignoreBlackList ? true : !packageBlackList.includes(name)
+            ignoreBlackList
+              ? true
+              : ![...packageBlackList, ...blacklist].includes(name)
           )
       : _
   return targets.filter(Boolean)

@@ -15,4 +15,4 @@ export const cachedPkgJsonFields = [
 
 export const externalDependencies = ["@gallop/gallop"]
 
-export const packageBlackList = ["share", "sandbox"]
+export const packageBlackList = ["share"]

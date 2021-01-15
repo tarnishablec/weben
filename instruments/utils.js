@@ -52,7 +52,7 @@ export const createPackageJsonObj = (
     pkgJsonCacheObj
   )
 
-export const resolveRepoRootDir = () => String(process.env.PWD)
+export const resolveRepoRootDir = () => String(process.cwd())
 
 /** @param {string} packageName */
 export const resolvePackageDir = (packageName) => {
