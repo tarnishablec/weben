@@ -27,6 +27,7 @@
     "cz-conventional-changelog": "3.3.0",
     "esbuild": "^0.8.32",
     "eslint": "^7.18.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
     "execa": "^5.0.0",
     "fs-extra": "^9.0.1",

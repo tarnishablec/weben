@@ -1,7 +1,7 @@
 import esbuild from "esbuild"
 import { externalDependencies } from "../const.js"
 import path from "path"
-import { resolvePackageDir } from "../utils.js"
+import { resolvePackageDir, run } from "../utils.js"
 import { clean } from "./clean.js"
 import chalk from "chalk"
 
@@ -9,6 +9,28 @@ import chalk from "chalk"
 
 /** @type {BuildOptions["format"][]} */
 export const buildFormats = ["esm", "iife", "cjs"]
+
+/** @param {string} packageName */
+export function generateDts(packageName, entry = `src/index.ts`) {
+  const packageDir = resolvePackageDir(packageName)
+
+  console.log(
+    chalk.yellow(
+      `===== Generating ${packageName} Declaration Files =====`
+    )
+  )
+
+  run(
+    `npx tsc --emitDeclarationOnly -d --outdir ${path.resolve(
+      packageDir,
+      "dist"
+    )} ${path.resolve(packageDir, entry)}`
+  )
+
+  console.log(
+    chalk.yellowBright(`===== GenDeclaration Files emitted =====`)
+  )
+}
 
 /**
  * @param {string} packageName
@@ -45,6 +67,8 @@ export function build(packageName, { ignoreExternal = false }) {
       )
     )
   })
+
+  generateDts(packageName)
 }
 
 export default build

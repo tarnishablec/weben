@@ -6,6 +6,11 @@
     "jest": true,
     "worker": true
   },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "extends": [
     "eslint:recommended",
     "plugin:import/errors",
@@ -20,7 +25,11 @@
   "plugins": ["@typescript-eslint", "import"],
   "rules": {
     "no-unused-vars": "off",
-    "import/extensions": ["error", "ignorePackages"],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      { "ts": "never" }
+    ],
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/ban-ts-comment": [
       "error",

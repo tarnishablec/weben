@@ -14,3 +14,5 @@ component("sand-box", function (this: ReactiveElement) {
 })
 
 render(html`<sand-box></sand-box>`)
+
+export { test } from "./test"

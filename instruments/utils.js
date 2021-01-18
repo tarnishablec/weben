@@ -1,6 +1,7 @@
 import { AUTHOR, EMAIL, SCOPE, URL } from "./const.js"
 import execa from "execa"
 import path from "path"
+// import chalk from "chalk"
 
 /**
  * @param {string} cmd
@@ -52,7 +53,7 @@ export const createPackageJsonObj = (
     pkgJsonCacheObj
   )
 
-export const resolveRepoRootDir = () => String(process.cwd())
+export const resolveRepoRootDir = () => process.cwd()
 
 /** @param {string} packageName */
 export const resolvePackageDir = (packageName) => {
@@ -63,3 +64,17 @@ export const resolvePackageDir = (packageName) => {
 }
 
 export const boot = () => run("lerna bootstrap")
+
+/** @param {number} timeout */
+export const sleep = async (timeout) => {
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(void 0)
+    }, timeout)
+  })
+}
+
+/** @param {string} message */
+export const log = (message) => {
+  console.log(message)
+}
