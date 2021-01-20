@@ -1,6 +1,7 @@
 import { AUTHOR, EMAIL, SCOPE, URL } from "./const.js"
 import execa from "execa"
 import path from "path"
+import { createRequire } from "module"
 // import chalk from "chalk"
 
 /**
@@ -78,3 +79,5 @@ export const sleep = async (timeout) => {
 export const log = (message) => {
   console.log(message)
 }
+
+export const require = createRequire(import.meta.url)

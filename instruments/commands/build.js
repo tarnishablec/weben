@@ -10,8 +10,19 @@ import fs from "fs-extra"
 
 /** @typedef {import("esbuild").BuildOptions} BuildOptions */
 
-/** @type {BuildOptions["format"][]} */
-export const buildFormats = ["esm", "iife", "cjs"]
+/**
+ * @type {{
+ *   format: BuildOptions["format"]
+ *   minify?: boolean
+ *   outfileName: string
+ * }[]}
+ */
+export const buildFormats = [
+  { format: "esm", minify: true, outfileName: "index.esm.min.js" },
+  { format: "esm", outfileName: "index.esm.js" },
+  { format: "cjs", minify: true, outfileName: "index.cjs.js" },
+  { format: "iife", minify: true, outfileName: "index.iife.js" }
+]
 
 /** @param {string} packageName */
 export function generateDts(
@@ -50,7 +61,12 @@ export function generateDts(
           omitTrimmingComments: true
         },
         projectFolder: packageDir,
-        compiler: { overrideTsconfig: {} },
+        compiler: {
+          tsconfigFilePath: path.resolve(
+            resolveRepoRootDir(),
+            "tsconfig.json"
+          )
+        },
         bundledPackages: []
       },
       configObjectFullPath: path.resolve(
@@ -63,32 +79,18 @@ export function generateDts(
   )
 
   fs.removeSync(tempDir)
-
-  // run(
-  //   `npx ts-bundle-generator -o ${path.resolve(
-  //     packageDir,
-  //     "dist/index.d.ts"
-  //   )} ${path.resolve(packageDir, entry)}`
-  // )
-
-  console.log(
-    chalk.yellowBright(`===== GenDeclaration Files emitted =====`)
-  )
 }
 
 /** @param {string} packageName */
 export function build(packageName, { ignoreExternal = false } = {}) {
   clean(packageName)
   const packageDir = resolvePackageDir(packageName)
-  buildFormats.forEach((format) => {
-    const outfile = path.resolve(
-      packageDir,
-      `dist/index.${format}.js`
-    )
+  buildFormats.forEach(({ format, outfileName, minify }) => {
+    const outfile = path.resolve(packageDir, `dist/${outfileName}`)
 
     console.log(
       chalk.cyan(
-        `===== Building ${packageName} == format: ${format} =====`
+        `===== Building ${packageName} == format: ${format} == minify: ${!!minify} =====`
       )
     )
     esbuild.buildSync({
@@ -97,7 +99,7 @@ export function build(packageName, { ignoreExternal = false } = {}) {
       loader: { ".ts": "ts" },
       platform: "browser",
       format,
-      minify: true,
+      minify,
       external: ignoreExternal ? [] : externalDependencies,
       bundle: true
     })
