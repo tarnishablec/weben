@@ -7,7 +7,7 @@ export const create = (packageName) => {
   if (!packageName)
     throw new Error(`must provide a name before create package.`)
   run(`npx lerna create @${SCOPE}/${packageName} --yes`, {})
-  init(packageName, true)
+  init(packageName, { reset: true })
 }
 
 export default create

@@ -13,6 +13,6 @@ component("sand-box", function (this: ReactiveElement) {
   return html`<div class="sandbox">this is sandbox</div>`
 })
 
-render(html`<sand-box></sand-box>`)
+export const res = render(html`<sand-box></sand-box>`)
 
-export { test } from "./test"
+export { testResult } from "./test"

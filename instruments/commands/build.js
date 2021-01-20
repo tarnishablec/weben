@@ -1,9 +1,12 @@
 import esbuild from "esbuild"
 import { externalDependencies } from "../const.js"
 import path from "path"
-import { resolvePackageDir, run } from "../utils.js"
+import { resolvePackageDir, resolveRepoRootDir } from "../utils.js"
 import { clean } from "./clean.js"
 import chalk from "chalk"
+import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
+import ts from "typescript"
+import fs from "fs-extra"
 
 /** @typedef {import("esbuild").BuildOptions} BuildOptions */
 
@@ -11,7 +14,10 @@ import chalk from "chalk"
 export const buildFormats = ["esm", "iife", "cjs"]
 
 /** @param {string} packageName */
-export function generateDts(packageName, entry = `src/index.ts`) {
+export function generateDts(
+  packageName,
+  { entry = `src/index.ts` } = {}
+) {
   const packageDir = resolvePackageDir(packageName)
 
   console.log(
@@ -20,23 +26,58 @@ export function generateDts(packageName, entry = `src/index.ts`) {
     )
   )
 
-  run(
-    `npx tsc --emitDeclarationOnly -d --outdir ${path.resolve(
-      packageDir,
-      "dist"
-    )} ${path.resolve(packageDir, entry)}`
+  const tempDir = path.resolve(packageDir, "dist/.temp")
+
+  ts.createProgram({
+    rootNames: [path.resolve(packageDir, entry)],
+    options: {
+      declaration: true,
+      emitDeclarationOnly: true,
+      outDir: tempDir
+    }
+  }).emit()
+
+  Extractor.invoke(
+    ExtractorConfig.prepare({
+      configObject: {
+        mainEntryPointFilePath: path.resolve(tempDir, "index.d.ts"),
+        dtsRollup: {
+          enabled: true,
+          untrimmedFilePath: path.resolve(
+            packageDir,
+            "dist/index.d.ts"
+          ),
+          omitTrimmingComments: true
+        },
+        projectFolder: packageDir,
+        compiler: { overrideTsconfig: {} },
+        bundledPackages: []
+      },
+      configObjectFullPath: path.resolve(
+        resolveRepoRootDir(),
+        "tsconfig.json"
+      ),
+      packageJsonFullPath: path.resolve(packageDir, "package.json")
+    }),
+    { showVerboseMessages: true, localBuild: true }
   )
+
+  fs.removeSync(tempDir)
+
+  // run(
+  //   `npx ts-bundle-generator -o ${path.resolve(
+  //     packageDir,
+  //     "dist/index.d.ts"
+  //   )} ${path.resolve(packageDir, entry)}`
+  // )
 
   console.log(
     chalk.yellowBright(`===== GenDeclaration Files emitted =====`)
   )
 }
 
-/**
- * @param {string} packageName
- * @param {{ ignoreExternal?: boolean }} options
- */
-export function build(packageName, { ignoreExternal = false }) {
+/** @param {string} packageName */
+export function build(packageName, { ignoreExternal = false } = {}) {
   clean(packageName)
   const packageDir = resolvePackageDir(packageName)
   buildFormats.forEach((format) => {

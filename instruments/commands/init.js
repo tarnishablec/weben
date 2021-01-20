@@ -1,6 +1,5 @@
 import fs from "fs-extra"
 import path from "path"
-import minimist from "minimist"
 import { cachedPkgJsonFields } from "../const.js"
 import {
   boot,
@@ -9,29 +8,21 @@ import {
 } from "../utils.js"
 
 /** @param {string} packageName */
-export const init = (
-  packageName,
-  isInit = !!minimist(process.argv.slice(2)).init
-) => {
-  if (isInit) {
-    const packageDir = resolvePackageDir(packageName)
-    initPackageJson(packageDir, packageName, isInit)
-    initTest(packageDir, packageName)
-    initIndexTs(packageDir, packageName)
+export const init = (packageName, { reset = false }) => {
+  if (reset) {
+    initPackageJson(packageName, { reset })
+    initTest(packageName)
+    initIndexTs(packageName, { reset })
   }
   boot()
 }
 
-/**
- * @param {string} packageDir
- * @param {string} packageName
- * @param {boolean} [isInit] Default is `false`
- */
+/** @param {string} packageName */
 export const initPackageJson = (
-  packageDir,
   packageName,
-  isInit = false
+  { reset = false } = {}
 ) => {
+  const packageDir = resolvePackageDir(packageName)
   const packageJsonPath = path.resolve(packageDir, `package.json`)
   if (fs.existsSync(packageJsonPath)) {
     const packageJsonObj = JSON.parse(
@@ -39,7 +30,7 @@ export const initPackageJson = (
     )
     const cache = {}
     cachedPkgJsonFields
-      .filter((f) => (isInit ? !["version"].includes(f) : true))
+      .filter((f) => (reset ? !["version"].includes(f) : true))
       .forEach((field) =>
         Reflect.set(cache, field, Reflect.get(packageJsonObj, field))
       )
@@ -58,13 +49,11 @@ export const initPackageJson = (
   }
 }
 
-/**
- * @param {string} packageDir
- * @param {string} packageName
- */
-export const initIndexTs = (packageDir, packageName) => {
+/** @param {string} packageName */
+export const initIndexTs = (packageName, { reset = false }) => {
+  const packageDir = resolvePackageDir(packageName)
   const indexPath = path.resolve(packageDir, "src/index.ts")
-  if (!fs.existsSync(indexPath)) {
+  if (!fs.existsSync(indexPath) || reset) {
     fs.ensureFileSync(indexPath)
     fs.writeFileSync(
       indexPath,
@@ -74,11 +63,9 @@ export const initIndexTs = (packageDir, packageName) => {
   }
 }
 
-/**
- * @param {string} packageDir
- * @param {string} packageName
- */
-export const initTest = (packageDir, packageName) => {
+/** @param {string} packageName */
+export const initTest = (packageName) => {
+  const packageDir = resolvePackageDir(packageName)
   const testMainPath = path.resolve(
     packageDir,
     `__tests__/${packageName}.test.ts`

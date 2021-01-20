@@ -33,8 +33,8 @@ export const resolveArgTargets = ({
   emptyIsRoot,
   ignoreBlackList
 } = {}) => {
-  const { _, blacklist } = minimist(process.argv.slice(2))
-  const _blacklist = String(blacklist).split(",")
+  const { _, ignore } = minimist(process.argv.slice(2))
+  const ignoreList = String(ignore).split(",")
   const targets =
     _.length === 0 && !emptyIsRoot
       ? fs
@@ -42,7 +42,7 @@ export const resolveArgTargets = ({
           .filter((name) =>
             ignoreBlackList
               ? true
-              : ![...packageBlackList, ..._blacklist].includes(name)
+              : ![...packageBlackList, ...ignoreList].includes(name)
           )
       : _
   return targets.filter(Boolean)

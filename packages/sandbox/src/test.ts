@@ -1,3 +1,3 @@
-export const test = (a: string) => {
+export const testResult = (a: string) => {
   return Number(a)
 }
