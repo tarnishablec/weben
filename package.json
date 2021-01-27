@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "boot": "lerna bootstrap",
+    "boot": "npx lerna bootstrap",
     "build": "node ./instruments/cli.js --command build",
     "dev": "node ./instruments/cli.js --command dev",
     "create": "node ./instruments/cli.js --command create",
@@ -13,7 +13,8 @@
     "clean": "node ./instruments/cli.js --command clean --ignoreBlackList",
     "upgrade": "node ./instruments/cli.js --command upgrade --emptyIsRoot",
     "release": "node ./instruments/cli.js --command release --emptyIsRoot",
-    "test": "npx jest"
+    "test": "npx jest",
+    "debug": "yarn run dev sandbox"
   },
   "type": "module",
   "devDependencies": {
@@ -22,13 +23,15 @@
     "@types/fs-extra": "^9.0.6",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
-    "@typescript-eslint/eslint-plugin": "^4.14.0",
-    "@typescript-eslint/parser": "^4.14.0",
+    "@types/sass": "^1.16.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
     "chalk": "^4.1.0",
+    "cheerio": "^1.0.0-rc.5",
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "3.3.0",
-    "electron": "^11.2.0",
-    "esbuild": "^0.8.33",
+    "electron": "^11.2.1",
+    "esbuild": "^0.8.36",
     "eslint": "^7.18.0",
     "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
@@ -39,13 +42,14 @@
     "lerna": "^3.22.1",
     "lint-staged": "^10.5.3",
     "minimist": "^1.2.5",
-    "npm-check-updates": "^11.0.0",
+    "npm-check-updates": "^11.1.1",
     "prettier": "^2.2.1",
     "prettier-plugin-jsdoc": "^0.3.7",
+    "sass": "^1.32.5",
     "snowpack": "^3.0.11",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3",
-    "vite": "^2.0.0-beta.35"
+    "vite": "^2.0.0-beta.50"
   },
   "dependencies": {
     "@gallop/gallop": "^0.12.0"

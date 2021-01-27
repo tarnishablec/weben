@@ -8,6 +8,10 @@ import {
   repeat
 } from "@gallop/gallop"
 
+import src from "./index.scss"
+
+console.log(src)
+
 component("sand-box", function (this: ReactiveElement) {
   useEffect(() => {
     console.dir(this)
@@ -15,6 +19,7 @@ component("sand-box", function (this: ReactiveElement) {
 
   const [state] = useState({ flag: true })
   return html`<div class="sandbox">
+    <!-- <link rel="stylesheet" .href="{0}" /> -->
     <div>
       ${state.flag ? html`<div>${String(state.flag)}</div>` : 2}
     </div>

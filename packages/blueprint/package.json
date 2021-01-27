@@ -1,0 +1,31 @@
+{
+  "name": "@weben/blueprint",
+  "version": "0.0.0",
+  "description": "weben blueprint",
+  "main": "src/index.ts",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "sideEffect": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tarnishablec/weben"
+  },
+  "keywords": [
+    "weben",
+    "blueprint"
+  ],
+  "author": "tarnishablec <tarnishablec@outlook.com>",
+  "homepage": "",
+  "license": "MIT",
+  "directories": {
+    "src": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

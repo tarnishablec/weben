@@ -1,5 +1,6 @@
 import { createServer } from "vite"
 // import { startServer } from "snowpack"
+import { LinkStylePlugin } from "../plugins/linkStylePlugin/index.js"
 import { resolvePackageDir } from "../utils.js"
 import path from "path"
 
@@ -16,11 +17,18 @@ export const viteDev = (packageName) => {
   const packageDir = resolvePackageDir(packageName)
   createServer({
     root: path.resolve(packageDir, "src"),
-    server: { hmr: true },
+    server: { hmr: true, port: 8888 },
     esbuild: {
       format: "esm",
       treeShaking: true
-    }
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {}
+      }
+    },
+    assetsInclude: [".scss"],
+    plugins: [LinkStylePlugin()]
   }).then((server) => {
     server.listen()
   })
