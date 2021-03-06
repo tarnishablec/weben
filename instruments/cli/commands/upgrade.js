@@ -1,5 +1,5 @@
 import ncu from "npm-check-updates"
-import { boot, resolvePackageDir } from "../utils.js"
+import { boot, resolvePackageDir } from "../../utils.js"
 import chalk from "chalk"
 import path from "path"
 
@@ -10,6 +10,7 @@ export const upgrade = (packageName) => {
       packageManager: "yarn",
       interactive: true,
       upgrade: true,
+      timeout: 600000,
       packageFile: packageName
         ? path.resolve(resolvePackageDir(packageName), "package.json")
         : undefined

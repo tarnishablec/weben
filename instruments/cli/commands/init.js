@@ -1,11 +1,11 @@
 import fs from "fs-extra"
 import path from "path"
-import { cachedPkgJsonFields } from "../const.js"
+import { cachedPkgJsonFields } from "../../const.js"
 import {
   boot,
   createPackageJsonObj,
   resolvePackageDir
-} from "../utils.js"
+} from "../../utils.js"
 
 /** @param {string} packageName */
 export const init = (packageName, { reset = false }) => {

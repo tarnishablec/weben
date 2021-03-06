@@ -13,6 +13,7 @@ export const cachedPkgJsonFields = [
   "version"
 ]
 
-export const externalDependencies = ["@gallop/gallop"]
+/** @type {string[]} */
+export const externalDependencies = []
 
 export const packageBlackList = ["share"]

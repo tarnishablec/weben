@@ -1,6 +1,6 @@
 import { init } from "./init.js"
-import { run } from "../utils.js"
-import { SCOPE } from "../const.js"
+import { run } from "../../utils.js"
+import { SCOPE } from "../../const.js"
 
 /** @param {string} packageName */
 export const create = (packageName) => {

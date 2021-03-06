@@ -1,16 +1,11 @@
 import {
   component,
-  render,
   html,
   ReactiveElement,
   useEffect,
   useState,
   repeat
 } from "@gallop/gallop"
-
-import src from "./index.scss"
-
-console.log(src)
 
 component("sand-box", function (this: ReactiveElement) {
   useEffect(() => {
@@ -42,5 +37,3 @@ component("sand-box", function (this: ReactiveElement) {
     <button>roll</button>
   </div>`
 })
-
-render(html`<sand-box></sand-box>`)

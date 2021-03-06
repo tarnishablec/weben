@@ -1,4 +1,4 @@
-import { run } from "../utils.js"
+import { run } from "../../utils.js"
 
 export const release = () => {
   run("yarn run build")

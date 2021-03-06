@@ -1,8 +1,8 @@
 /** @type {import("jest/../@jest/types/build/Config").InitialOptions} */
 const JestConfig = {
   preset: "ts-jest",
-  runner: "@jest-runner/electron",
-  testEnvironment: "@jest-runner/electron/environment",
+  runner: "jest-electron/runner",
+  testEnvironment: "jest-electron/environment",
   testMatch: [
     "<rootDir>/packages/**/__tests__/**/*.+(test|spec).[jt]s?(x)"
   ],

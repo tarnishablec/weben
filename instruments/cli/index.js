@@ -1,8 +1,8 @@
 import minimist from "minimist"
 import path from "path"
 import fs from "fs-extra"
-import { packageBlackList } from "./const.js"
-import { resolveRepoRootDir } from "./utils.js"
+import { packageBlackList } from "../const.js"
+import { resolveRepoRootDir } from "../utils.js"
 
 /** @param {string} [cmd] */
 export const runCommand = async (cmd) => {
