@@ -1,6 +1,6 @@
-import { AUTHOR, EMAIL, SCOPE, URL } from "./const.js"
 import execa from "execa"
 import path from "path"
+import fs from "fs-extra"
 import { createRequire } from "module"
 // import chalk from "chalk"
 
@@ -22,7 +22,7 @@ export const run = (cmd, options = {}) =>
  * @param {object} [pkgJsonCacheObj] Default is `{}`
  */
 export const createPackageJsonObj = (
-  { name, scope = SCOPE, author = AUTHOR, email = EMAIL, url = URL },
+  { name, scope, author, email, url },
   pkgJsonCacheObj = {}
 ) =>
   Object.assign(
@@ -61,6 +61,31 @@ export const resolvePackageDir = (packageName) => {
   return path.resolve(
     resolveRepoRootDir(),
     `./packages/${packageName}`
+  )
+}
+
+/** @param {string} packageName */
+export const resolvePackageJsonPath = (packageName) => {
+  const packageJsonPath = path.resolve(
+    resolvePackageDir(packageName),
+    "package.json"
+  )
+  if (fs.existsSync(packageJsonPath)) {
+    return path.resolve(
+      resolvePackageDir(packageName),
+      "package.json"
+    )
+  } else {
+    throw new Error(
+      `package [${packageName}] package.json does not exist`
+    )
+  }
+}
+
+/** @param {string} packageName */
+export const resolvePackageJsonObj = (packageName) => {
+  return JSON.parse(
+    fs.readFileSync(resolvePackageJsonPath(packageName), "utf-8")
   )
 }
 

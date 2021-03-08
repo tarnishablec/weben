@@ -1,1 +1,1 @@
-export const hello = "editor"
+export const hello = () => "editor" + Math.random()

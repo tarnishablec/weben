@@ -1,7 +1,11 @@
 import esbuild from "esbuild"
 import { externalDependencies } from "../../const.js"
 import path from "path"
-import { resolvePackageDir, resolveRepoRootDir } from "../../utils.js"
+import {
+  resolvePackageDir,
+  resolvePackageJsonObj,
+  resolveRepoRootDir
+} from "../../utils.js"
 import { clean } from "./clean.js"
 import chalk from "chalk"
 import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
@@ -85,6 +89,17 @@ export function generateDts(
 export function build(packageName, { ignoreExternal = false } = {}) {
   clean(packageName)
   const packageDir = resolvePackageDir(packageName)
+
+  const getPeers = () => {
+    const peerObj = Reflect.get(
+      resolvePackageJsonObj(packageName),
+      "peerDependencies"
+    )
+    return peerObj ? Object.keys(peerObj) : []
+  }
+
+  const peerDependencies = getPeers()
+
   buildFormats.forEach(({ format, outfileName, minify }) => {
     const outfile = path.resolve(packageDir, `dist/${outfileName}`)
 
@@ -97,10 +112,12 @@ export function build(packageName, { ignoreExternal = false } = {}) {
       entryPoints: [path.resolve(packageDir, "src/index.ts")],
       outfile,
       loader: { ".ts": "ts" },
-      platform: "browser",
       format,
       minify,
-      external: ignoreExternal ? [] : externalDependencies,
+      external: [
+        ...peerDependencies,
+        ...(ignoreExternal ? [] : externalDependencies)
+      ],
       bundle: true
     })
 

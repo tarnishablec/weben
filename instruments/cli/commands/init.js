@@ -1,11 +1,21 @@
 import fs from "fs-extra"
 import path from "path"
-import { cachedPkgJsonFields } from "../../const.js"
 import {
   boot,
   createPackageJsonObj,
-  resolvePackageDir
+  resolvePackageDir,
+  resolvePackageJsonPath
 } from "../../utils.js"
+
+const cachedPkgJsonFields = [
+  "devDependencies",
+  "peerDependencies",
+  "dependencies",
+  "private",
+  "buildOptions",
+  "gitHead",
+  "version"
+]
 
 /** @param {string} packageName */
 export const init = (packageName, { reset = false }) => {
@@ -22,31 +32,24 @@ export const initPackageJson = (
   packageName,
   { reset = false } = {}
 ) => {
-  const packageDir = resolvePackageDir(packageName)
-  const packageJsonPath = path.resolve(packageDir, `package.json`)
-  if (fs.existsSync(packageJsonPath)) {
-    const packageJsonObj = JSON.parse(
-      fs.readFileSync(packageJsonPath, "utf-8")
+  const packageJsonPath = resolvePackageJsonPath(packageName)
+  const packageJsonObj = JSON.parse(
+    fs.readFileSync(packageJsonPath, "utf-8")
+  )
+  const cache = {}
+  cachedPkgJsonFields
+    .filter((f) => (reset ? !["version"].includes(f) : true))
+    .forEach((field) =>
+      Reflect.set(cache, field, Reflect.get(packageJsonObj, field))
     )
-    const cache = {}
-    cachedPkgJsonFields
-      .filter((f) => (reset ? !["version"].includes(f) : true))
-      .forEach((field) =>
-        Reflect.set(cache, field, Reflect.get(packageJsonObj, field))
-      )
-    fs.writeFileSync(
-      packageJsonPath,
-      JSON.stringify(
-        createPackageJsonObj({ name: packageName }, cache),
-        null,
-        2
-      )
+  fs.writeFileSync(
+    packageJsonPath,
+    JSON.stringify(
+      createPackageJsonObj({ name: packageName }, cache),
+      null,
+      2
     )
-  } else {
-    throw new Error(
-      `package [${packageName}] package.json does not exist`
-    )
-  }
+  )
 }
 
 /** @param {string} packageName */
